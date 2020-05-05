@@ -1,5 +1,5 @@
-import json
-import re
+import json, re, csv, validators
+
 
 contacts = {}
 
@@ -40,7 +40,7 @@ def buscarContacto():
 
 
 def eliminarContacto():
-    # Displays
+    # Displays contacts with display function, erase based on number index
 
     input_nombre = input("Ingrese nombre del contacto que quiere eliminar\n")
     existe = input_nombre in contacts
@@ -62,19 +62,23 @@ def verContactos():
 
 
 def guardarContactos():
-
+    # saves changes, should be able to be called from anywhere
     pass
 
 def llamarContacto():
+    # Does wierd print thingy and waits then returns to main menu
     pass
 
 def textContacto():
+    # Prints texting and waits to return to mm
     pass
 
 def emailContacto():
+    # Prints emailing, asks for sender, subject and message etc
     pass
 
 def exportarContactos():
+    # export to csv
     pass
 
 
