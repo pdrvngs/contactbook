@@ -9,8 +9,7 @@ with open("contacts.json") as file:
 for key,value in contacts.items():
     for contact in value.items():
         print(contact[0])
-        for field, val in contact[1].items():
-            print(field+":", val)
+        print(contact[1]['telefono'])
 
 
 
@@ -51,31 +50,26 @@ def buscarContacto():
 
 
 def eliminarContacto():
+    pass
     # Displays contacts with display function, erase based on number index
 
-    input_nombre = input("Ingrese nombre del contacto que quiere eliminar\n")
-    existe = input_nombre in contacts
 
-    if existe:
-        del contacts[input_nombre]
-        print("Contacto eliminado con exito!\n")
-    else:
-        print("El contacto no existe, intentelo de nuevo\n")
+def listarContactos():
 
-
-def verContactos():
-
-    # Prints dict in list form is numbered and arranged alphabetically. Not including letters that dont exist yet.
-    ## After printing list ask to see any individual contact. Enter 0 for exit.
     count = 0
-    for key,value in contacts.items():
+    for key, value in contacts.items():
         print(key + ":")
         for contact in value:
             count = count + 1
-            print("  ",str(count) + ".",contact)
+            print("  ", str(count) + ".", contact)
+        print("")
+
+def verContactos():
+
+    listarContactos()
 
     index = input("Ver Contacto: ")
-
+    print("\n\n")
     count = 0
     for key, value in contacts.items():
         for contact in value.items():
@@ -83,7 +77,10 @@ def verContactos():
             if (count == int(index)):
                 print(contact[0])
                 for field, val in contact[1].items():
-                    print(field + ":", val)
+                    print("  "+field + ":", val)
+                print("\n\n")
+                input("Presione enter para continuar.")
+                print("\n\n\n\n")
 
 
 def guardarContactos():
@@ -91,16 +88,52 @@ def guardarContactos():
     pass
 
 def llamarContacto():
-    # Does wierd print thingy and waits then returns to main menu
-    pass
+    listarContactos()
+    index = input("Llamar Contacto: ")
+    print("\n")
+    count = 0
+
+    for key, value in contacts.items():
+        for contact in value.items():
+            count += 1
+            if (count == int(index)):
+                telefono = contact[1]['telefono']
+                print("Llamando a " + contact[0] + " al " + telefono)
+
 
 def textContacto():
-    # Prints texting and waits to return to mm
-    pass
+    listarContactos()
+    index = input("Mensajear Contacto: ")
+    print("\n")
+    count = 0
+
+    for key, value in contacts.items():
+        for contact in value.items():
+            count += 1
+            if (count == int(index)):
+                print(contact[0])
+                message = input("Mensaje: ")
+                telefono = contact[1]['telefono']
+                print("Hola " + contact[0] + " " + telefono)
+                print("   > ", message)
 
 def emailContacto():
-    # Prints emailing, asks for sender, subject and message etc
-    pass
+    listarContactos()
+    index = input("Email Contacto: ")
+    print("\n")
+    count = 0
+
+    for key, value in contacts.items():
+        for contact in value.items():
+            count += 1
+            if (count == int(index)):
+                print(contact[0])
+                subject = input("Subejct: ")
+                mensaje = input("Mensaje: ")
+                email = contact[1]['email']
+                print("Enviando correo a " + contact[0] + " " + email)
+                print("   > ", subject)
+                print("   > ", mensaje)
 
 def exportarContactos():
     # export to csv
