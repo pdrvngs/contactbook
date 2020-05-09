@@ -6,6 +6,14 @@ import json, re, csv, validators
 with open("contacts.json") as file:
     contacts = json.load(file)
 
+for key,value in contacts.items():
+    for contact in value.items():
+        print(contact[0])
+        for field, val in contact[1].items():
+            print(field+":", val)
+
+
+
 
 
 exit = False
@@ -69,23 +77,13 @@ def verContactos():
     index = input("Ver Contacto: ")
 
     count = 0
-    for key,value in contacts.items():
-        for contact in value:
-            count += 1
-            if(count == int(index)):
-                print(contact)
-
-    count = 0
     for key, value in contacts.items():
-        for contact_info in value.values():
+        for contact in value.items():
             count += 1
             if (count == int(index)):
-                contact_info_list = list(contact_info.values())
-                print(" telefono: ", contact_info_list[0])
-                print(" email: ", contact_info_list[1])
-                print(" company: ", contact_info_list[2])
-                print(" extra: ", contact_info_list[3])
-
+                print(contact[0])
+                for field, val in contact[1].items():
+                    print(field + ":", val)
 
 
 def guardarContactos():
