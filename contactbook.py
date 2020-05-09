@@ -1,9 +1,12 @@
 import json, re, csv, validators
 
 
-contacts = {}
 
 # Load contacts from JSON
+with open("contacts.json") as file:
+    contacts = json.load(file)
+
+
 
 exit = False
 
@@ -56,9 +59,33 @@ def verContactos():
 
     # Prints dict in list form is numbered and arranged alphabetically. Not including letters that dont exist yet.
     ## After printing list ask to see any individual contact. Enter 0 for exit.
-
+    count = 0
     for key,value in contacts.items():
-        print(key + " " + value)
+        print(key + ":")
+        for contact in value:
+            count = count + 1
+            print("  ",str(count) + ".",contact)
+
+    index = input("Ver Contacto: ")
+
+    count = 0
+    for key,value in contacts.items():
+        for contact in value:
+            count += 1
+            if(count == int(index)):
+                print(contact)
+
+    count = 0
+    for key, value in contacts.items():
+        for contact_info in value.values():
+            count += 1
+            if (count == int(index)):
+                contact_info_list = list(contact_info.values())
+                print(" telefono: ", contact_info_list[0])
+                print(" email: ", contact_info_list[1])
+                print(" company: ", contact_info_list[2])
+                print(" extra: ", contact_info_list[3])
+
 
 
 def guardarContactos():
