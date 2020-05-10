@@ -1,30 +1,34 @@
 import json, re, csv, validators
 
 
-
+info = {}
 # Load contacts from JSON
 with open("contacts.json") as file:
     contacts = json.load(file)
-
-for key,value in contacts.items():
-    for contact in value.items():
-        print(contact[0])
-        print(contact[1]['telefono'])
-
-
-
 
 
 exit = False
 
 def crearContacto():
+    nombre = input("Nombre: ")
+    telefono = input("Telefono: ")
+    email = input("Email: ")
+    company = input("Company: ")
+    extra = input("Extra: ")
 
-    # Input fields: V; Name&Last, V;phone, V; email, E; company, E; extra
-    # fail upon wrong ingres of any of these, preferably reverting to the ones not correctly inputed.
+    first_letter = nombre[0].upper()
+    alf_ord = []
+    for key, value in contacts.items():
+        if key not in alf_ord:
+            alf_ord.append(key)
 
-    input_nombre = input("Ingrese nombre del nuevo contacto\n")
-    input_telefono = input("Ingrese telefono del nuevo contacto\n")
-    contacts[input_nombre] = input_telefono
+    if first_letter not in alf_ord:
+        contacts[first_letter] = {}
+
+    for key in contacts.keys():
+        if key == first_letter:
+            contacts[key][nombre] = {'telefono': telefono, 'email': email, 'company': company, 'extra': extra}
+
 
 def editarContacto():
     input_nombre = input("Ingrese nombre del contacto que quiere editar\n")
