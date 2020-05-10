@@ -136,9 +136,13 @@ def emailContacto():
                 print("   > ", mensaje)
 
 def exportarContactos():
-    # export to csv
-    pass
-
+    with open("contact_manager.csv", 'w', newline='') as contacts_csv:
+        fieldnames = ['name', 'telefono', 'email', 'company', 'extra']
+        writer = csv.DictWriter(contacts_csv, fieldnames = fieldnames)
+        writer.writeheader()
+        for key, value in contacts.items():
+            for contact in value.items():
+                writer.writerow({'name': contact[0], 'telefono': contact[1]['telefono'], 'email': contact[1]['email'], 'company': contact[1]['company'], 'extra': contact[1]['extra']})
 
 
 while not exit:
@@ -152,18 +156,18 @@ while not exit:
         buscarContacto()
     if input_menu == 4:
         eliminarContacto()
-    if input_menu == 5:
+    if input_menu == 5: # Done
         verContactos()
-    if input_menu == 6:
+    if input_menu == 6: # Done
         llamarContacto()
-    if input_menu == 7:
+    if input_menu == 7: # Done
         textContacto()
-    if input_menu == 8:
+    if input_menu == 8: # Done
         emailContacto()
-    if input_menu == 9:
+    if input_menu == 9: # Done
         exportarContactos()
 
     elif input_menu == 10:
-        # Ask  to save changes or not
+
         guardarContactos()
         exit = True
