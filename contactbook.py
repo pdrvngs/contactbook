@@ -61,9 +61,14 @@ def editarContacto():
 
 
 def buscarContacto():
-    # Look up by name or last name. Use regex for parcial matches
 
-    pass
+    searcher = input("Ingrese algo: ")
+    for key, value in contacts.items():
+        for contact in value.items():
+            if re.search(rf"{searcher.lower()}", contact[0].lower()):
+                print("-", contact[0])
+
+
 
 
 def eliminarContacto():
