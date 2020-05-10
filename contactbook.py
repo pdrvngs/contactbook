@@ -31,31 +31,58 @@ def crearContacto():
 
 
 def editarContacto():
-    input_nombre = input("Ingrese nombre del contacto que quiere editar\n")
+    listarContactos()
 
-    existe = input_nombre in contacts
+    index = input("Ver Contacto: ")
+    print("\n\n")
+    count = 0
+    for key, value in contacts.items():
+        for contact in value.items():
+            count += 1
+            if (count == int(index)):
+                print(contact[0])
+                edit_name = contact[0]
+                edit_key = key
+                for field, val in contact[1].items():
+                    print("  " + field + ":", val)
 
-    if existe:
-        input_telefono = input("Ingrese nuevo telefono del contacto\n")
-        contacts[input_nombre] = input_telefono
-    else:
-        print("El contacto no existe, porfavor intente de nuevo\n")
+    change = int(input("Which field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
+
+    if change == 1:
+        contacts[edit_key][edit_name]['telefono'] = input("Nuevo Telefono: ")
+    if change == 2:
+        contacts[edit_key][edit_name]['email'] = input("Nuevo Email: ")
+    if change == 3:
+        contacts[edit_key][edit_name]['Company'] = input("Nuevo Company: ")
+    if change == 4:
+        contacts[edit_key][edit_name]['Extra'] = input("Nuevo Extra: ")
+    if change == 5:
+        pass
+
 
 def buscarContacto():
     # Look up by name or last name. Use regex for parcial matches
 
-    input_nombre = input("Ingrese nombre del contacto que quiere buscar\n")
-    existe = input_nombre in contacts
-
-    if existe:
-        print(input_nombre + " " + contacts[input_nombre])
-    else:
-        print("El contacto no existe, porfavor intente de nuevo\n")
+    pass
 
 
 def eliminarContacto():
-    pass
-    # Displays contacts with display function, erase based on number index
+    listarContactos()
+    delete = False
+    index = input("Eliminar Contacto: ")
+    print("\n\n")
+    count = 0
+    for key, value in contacts.items():
+        for contact in value.items():
+            count += 1
+            if (count == int(index)):
+                delete_key =  key
+                delete_contact = contact[0]
+                delete = True
+
+    if delete == True:
+        del contacts[delete_key][delete_contact]
+
 
 
 def listarContactos():
@@ -152,13 +179,13 @@ def exportarContactos():
 while not exit:
 
     input_menu = int(input(" 1. Agregar Contacto \n 2. Editar Contacto\n 3. Buscar Contacto\n 4. Eliminar Contacto\n 5. Ver Contactos\n 6. Llamar Contacto \n 7. Text Contacto \n 8. Email Contacto \n 9. Exportar Contactos \n 10. Salir\n"))
-    if input_menu == 1:
+    if input_menu == 1: # Done
         crearContacto()
     if input_menu == 2:
         editarContacto()
     if input_menu == 3:
         buscarContacto()
-    if input_menu == 4:
+    if input_menu == 4: # Done
         eliminarContacto()
     if input_menu == 5: # Done
         verContactos()
