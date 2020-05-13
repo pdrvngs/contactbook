@@ -1,18 +1,38 @@
-import json, re, csv, validators
+import json, re, csv, validators, time, emoji
 
-
+numbers = ['0', '1','2','3','4','5','6','7','8','9']
 info = {}
 # Load contacts from JSON
 with open("contacts.json") as file:
     contacts = json.load(file)
 
 
+
 exit = False
 
 def crearContacto():
+
     nombre = input("Nombre: ")
-    telefono = input("Telefono: ")
+    while len(nombre) < 1:
+        nombre = input("Porfavor ingrese un nombre: ")
+
+    valid_phone = 0
+    while(valid_phone != 8):
+        valid_phone = 0
+        telefono = input("Telefono: ")
+        for i in telefono:
+            if i in numbers:
+                valid_phone += 1
+            else:
+                pass
+        if valid_phone != 8:
+            print("Invalid phone number, try again")
+
+
     email = input("Email: ")
+    while validators.email(email) != True:
+        email = input("No es un correo valido, porfavor intente de nuevo: ")
+
     company = input("Company: ")
     extra = input("Extra: ")
 
@@ -33,6 +53,7 @@ def crearContacto():
 def editarContacto():
     listarContactos()
 
+    found = False
     index = input("Ver Contacto: ")
     print("\n\n")
     count = 0
@@ -41,24 +62,27 @@ def editarContacto():
             count += 1
             if (count == int(index)):
                 print(contact[0])
+                found = True
                 edit_name = contact[0]
                 edit_key = key
                 for field, val in contact[1].items():
                     print("  " + field + ":", val)
 
-    change = int(input("Which field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
+                change = int(input("Which field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
 
-    if change == 1:
-        contacts[edit_key][edit_name]['telefono'] = input("Nuevo Telefono: ")
-    if change == 2:
-        contacts[edit_key][edit_name]['email'] = input("Nuevo Email: ")
-    if change == 3:
-        contacts[edit_key][edit_name]['Company'] = input("Nuevo Company: ")
-    if change == 4:
-        contacts[edit_key][edit_name]['Extra'] = input("Nuevo Extra: ")
-    if change == 5:
-        pass
+                if change == 1:
+                    contacts[edit_key][edit_name]['telefono'] = input("Nuevo Telefono: ")
+                if change == 2:
+                    contacts[edit_key][edit_name]['email'] = input("Nuevo Email: ")
+                if change == 3:
+                    contacts[edit_key][edit_name]['Company'] = input("Nuevo Company: ")
+                if change == 4:
+                    contacts[edit_key][edit_name]['Extra'] = input("Nuevo Extra: ")
+                if change == 5:
+                    pass
 
+    if found != True:
+        print("Contacto Invalido\n")
 
 def buscarContacto():
 
@@ -86,7 +110,9 @@ def eliminarContacto():
                 delete = True
 
     if delete == True:
+        print(f"Contacto {delete_contact} borrado\n\n")
         del contacts[delete_key][delete_contact]
+        time.sleep(3)
 
 
 
@@ -134,7 +160,8 @@ def llamarContacto():
             count += 1
             if (count == int(index)):
                 telefono = contact[1]['telefono']
-                print("Llamando a " + contact[0] + " al " + telefono)
+                print(emoji.emojize("Llamando :phone: a " + contact[0] + " al " + telefono, use_aliases=True))
+                time.sleep(3)
 
 
 def textContacto():
@@ -152,6 +179,13 @@ def textContacto():
                 telefono = contact[1]['telefono']
                 print("Hola " + contact[0] + " " + telefono)
                 print("   > ", message)
+                enviar = input("\nDesea enviar el mensaje? (y/n)\n ")
+                if enviar.lower() == 'y':
+                    print(f"\nEnviando mensaje a {contact[0]}\n\n")
+                    time.sleep(3)
+                else:
+                    print("\nMensaje no enviado\n\n")
+                    time.sleep(1)
 
 def emailContacto():
     listarContactos()
