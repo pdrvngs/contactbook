@@ -9,8 +9,14 @@ will allow the user to create, remove, edit and interact with their contact list
 The contacts are saved and loaded back in when the user quits and restarts the script. 
 
 #### How it works
-Utilizing as much base python as possible, the project consists of a series of functions for 
-each functionality of the script, while using control structures to determine the flow of the application. 
+Utilizing as much base python as possible, the project consists of a series of functions that provide the backbone of the script, while using control structures to determine the flow of the application. 
 The underlying data structure of the project is a JSON file which is converted into a 
-python dictionary for user manipulation and then saved as a JSON file for later use. 
-The contacts list can also be exported as a CSV for convenience. 
+python dictionary for user manipulation. The contacts list is then exported as a CSV for convenience. 
+
+###### Libraries Used
+- emoji (PyPy, not django Emoji)
+- validators
+- json
+- re
+- time
+- csv
