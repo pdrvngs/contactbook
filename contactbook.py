@@ -57,10 +57,18 @@ def editarContacto():
     index = input("Ver Contacto: ")
     print("\n\n")
     count = 0
+
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if (count == index or contact[0] == index):
                 print(contact[0])
                 found = True
                 edit_name = contact[0]
@@ -68,7 +76,7 @@ def editarContacto():
                 for field, val in contact[1].items():
                     print("  " + field + ":", val)
 
-                change = int(input("Which field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
+                change = int(input("\nWhich field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
 
                 if change == 1:
                     contacts[edit_key][edit_name]['telefono'] = input("Nuevo Telefono: ")
@@ -81,8 +89,10 @@ def editarContacto():
                 if change == 5:
                     pass
 
+
     if found != True:
         print("Contacto Invalido\n")
+
 
 def buscarContacto():
 
@@ -93,18 +103,23 @@ def buscarContacto():
                 print("-", contact[0])
 
 
-
-
 def eliminarContacto():
     listarContactos()
     delete = False
     index = input("Eliminar Contacto: ")
     print("\n\n")
     count = 0
+
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if (count == int(index) or contact[0] == index):
                 delete_key =  key
                 delete_contact = contact[0]
                 delete = True
@@ -113,7 +128,6 @@ def eliminarContacto():
         print(f"Contacto {delete_contact} borrado\n\n")
         del contacts[delete_key][delete_contact]
         time.sleep(3)
-
 
 
 def listarContactos():
@@ -125,6 +139,7 @@ def listarContactos():
             count = count + 1
             print("  ", str(count) + ".", contact)
         print("")
+
 
 def verContactos():
 
@@ -149,16 +164,23 @@ def guardarContactos():
     # saves changes, should be able to be called from anywhere
     pass
 
+
 def llamarContacto():
     listarContactos()
     index = input("Llamar Contacto: ")
     print("\n")
     count = 0
 
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if (count == int(index) or contact[0] == index):
                 telefono = contact[1]['telefono']
                 print(emoji.emojize("Llamando :phone: a " + contact[0] + " al " + telefono, use_aliases=True))
                 time.sleep(3)
@@ -170,10 +192,16 @@ def textContacto():
     print("\n")
     count = 0
 
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if (count == int(index) or contact[0] == index):
                 print(contact[0])
                 message = input("Mensaje: ")
                 telefono = contact[1]['telefono']
@@ -187,23 +215,31 @@ def textContacto():
                     print("\nMensaje no enviado\n\n")
                     time.sleep(1)
 
+
 def emailContacto():
     listarContactos()
     index = input("Email Contacto: ")
     print("\n")
     count = 0
 
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if (count == int(index) or contact[0] == index):
                 print(contact[0])
                 subject = input("Subejct: ")
                 mensaje = input("Mensaje: ")
                 email = contact[1]['email']
-                print("Enviando correo a " + contact[0] + " " + email)
+                print(emoji.emojize("Enviando :envelope: a " + contact[0] + " " + email))
                 print("   > ", subject)
                 print("   > ", mensaje)
+
 
 def exportarContactos():
     with open("contact_manager.csv", 'w', newline='') as contacts_csv:
@@ -220,9 +256,9 @@ while not exit:
     input_menu = int(input(" 1. Agregar Contacto \n 2. Editar Contacto\n 3. Buscar Contacto\n 4. Eliminar Contacto\n 5. Ver Contactos\n 6. Llamar Contacto \n 7. Text Contacto \n 8. Email Contacto \n 9. Exportar Contactos \n 10. Salir\n"))
     if input_menu == 1: # Done
         crearContacto()
-    if input_menu == 2:
+    if input_menu == 2: # Done
         editarContacto()
-    if input_menu == 3:
+    if input_menu == 3: # Done
         buscarContacto()
     if input_menu == 4: # Done
         eliminarContacto()
