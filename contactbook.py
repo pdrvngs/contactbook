@@ -31,13 +31,13 @@ def crearContacto():
             else:
                 pass
         if valid_phone != 8:
-            print("Invalid phone number, try again")
+            print("Numero telefonico invalido, porfavor intente de nuevo:\n")
 
-    email = input("Email: ")
+    email = input("Correo: ")
     while validators.email(email) is not True:
-        email = input("No es un correo valido, porfavor intente de nuevo: ")
+        email = input("No es un correo valido, porfavor intente de nuevo: \n")
 
-    company = input("Company: ")
+    company = input("Empresa: ")
     extra = input("Extra: ")
 
     first_letter = nombre[0].upper()
@@ -97,21 +97,21 @@ def editarContacto():
                             else:
                                 pass
                         if valid_phone != 8:
-                            print("Invalid phone number, try again")
+                            print("Numero telefonico invalido, porfavor intente de nuevo:\n")
 
                     contacts[edit_key][edit_name]['telefono'] = telefono
 
                 if change == 2:
 
-                    email = input("Nuevo Email: ")
+                    email = input("Nuevo correo: ")
                     while validators.email(email) is not True:
-                        email = input("No es un correo valido, porfavor intente de nuevo: ")
+                        email = input("No es un correo valido, porfavor intente de nuevo: \n")
 
                     contacts[edit_key][edit_name]['email'] = email
                 if change == 3:
-                    contacts[edit_key][edit_name]['Company'] = input("Nuevo Company: ")
+                    contacts[edit_key][edit_name]['Company'] = input("Nueva empresa: ")
                 if change == 4:
-                    contacts[edit_key][edit_name]['Extra'] = input("Nuevo Extra: ")
+                    contacts[edit_key][edit_name]['Extra'] = input("Nueva información extra: ")
                 if change == 5:
                     pass
 
@@ -122,21 +122,21 @@ def editarContacto():
 
 
 def buscarContacto():
-    searcher = input("Ingrese lo que quisiera buscar: ")
+    searcher = input("Ingrese a quien quisiera buscar: ")
     for key, value in contacts.items():
         for contact in value.items():
             if re.search(rf"{searcher.lower()}", contact[0].lower()):
                 print("-", contact[0])
 
     print("\n\n")
-    input("Press Enter To Continue")
+    input("Presione enter para continuar")
     print("\n\n\n")
 
 
 def eliminarContacto():
     listarContactos()
     delete = False
-    index = input("Eliminar Contacto: ")
+    index = input("Eliminar contacto: ")
     print("\n\n")
     count = 0
     delete_contact = ""
@@ -175,7 +175,7 @@ def listarContactos():
 def verContactos():
     listarContactos()
 
-    index = input("Ver Contacto: ")
+    index = input("Ver contacto: ")
     print("\n\n")
     count = 0
 
@@ -199,7 +199,7 @@ def verContactos():
 
 def llamarContacto():
     listarContactos()
-    index = input("Llamar Contacto: ")
+    index = input("Llamar contacto: ")
     print("\n")
     count = 0
 
@@ -254,7 +254,7 @@ def textContacto():
 
 def emailContacto():
     listarContactos()
-    index = input("Email Contacto: ")
+    index = input("Email contacto: ")
     print("\n")
     count = 0
 
@@ -269,7 +269,7 @@ def emailContacto():
             count += 1
             if count == index or contact[0] == index:
                 print(contact[0])
-                subject = input("Subject: ")
+                subject = input("Sujeto: ")
                 mensaje = input("Mensaje: ")
                 email = contact[1]['email']
                 print(emoji.emojize("Enviando :envelope: a " + contact[0] + " " + email))
@@ -305,7 +305,7 @@ while not exit_menu:
             valid = True
         except ValueError:
             print("\n\n\n")
-            print("Not a valid choice")
+            print("Not es una opción valida.")
 
     if input_menu == 1:
         crearContacto()
