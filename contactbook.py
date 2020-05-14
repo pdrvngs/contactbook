@@ -1,14 +1,18 @@
-import json, re, csv, validators, time, emoji
+import csv
+import emoji
+import json
+import re
+import time
+import validators
 
-numbers = ['0', '1','2','3','4','5','6','7','8','9']
+numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 info = {}
 # Load contacts from JSON
 with open("contacts.json") as file:
     contacts = json.load(file)
 
+exit_menu = False
 
-
-exit = False
 
 def crearContacto():
 
@@ -17,7 +21,8 @@ def crearContacto():
         nombre = input("Porfavor ingrese un nombre: ")
 
     valid_phone = 0
-    while(valid_phone != 8):
+    telefono = ""
+    while valid_phone != 8:
         valid_phone = 0
         telefono = input("Telefono: ")
         for i in telefono:
@@ -28,9 +33,8 @@ def crearContacto():
         if valid_phone != 8:
             print("Invalid phone number, try again")
 
-
     email = input("Email: ")
-    while validators.email(email) != True:
+    while validators.email(email) is not True:
         email = input("No es un correo valido, porfavor intente de nuevo: ")
 
     company = input("Company: ")
@@ -49,12 +53,16 @@ def crearContacto():
         if key == first_letter:
             contacts[key][nombre] = {'telefono': telefono, 'email': email, 'company': company, 'extra': extra}
 
+    print("\n\n\n")
+
 
 def editarContacto():
     listarContactos()
 
+    valid_phone = 0
+    telefono = ""
     found = False
-    index = input("Ver Contacto: ")
+    index = input("Editar Contacto: ")
     print("\n\n")
     count = 0
 
@@ -64,11 +72,10 @@ def editarContacto():
     except ValueError:
         pass
 
-
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == index or contact[0] == index):
+            if count == index or contact[0] == index:
                 print(contact[0])
                 found = True
                 edit_name = contact[0]
@@ -76,12 +83,31 @@ def editarContacto():
                 for field, val in contact[1].items():
                     print("  " + field + ":", val)
 
-                change = int(input("\nWhich field would you like to change?\n 1. Telefono\n 2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
+                change = int(input(
+                    "\nWhich field would you like to change?\n 1. Telefono\n "
+                    "2. Email\n 3. Company\n 4. Extra \n 5. Nada\n"))
 
                 if change == 1:
-                    contacts[edit_key][edit_name]['telefono'] = input("Nuevo Telefono: ")
+                    while valid_phone != 8:
+                        valid_phone = 0
+                        telefono = input("Nuevo Telefono: ")
+                        for i in telefono:
+                            if i in numbers:
+                                valid_phone += 1
+                            else:
+                                pass
+                        if valid_phone != 8:
+                            print("Invalid phone number, try again")
+
+                    contacts[edit_key][edit_name]['telefono'] = telefono
+
                 if change == 2:
-                    contacts[edit_key][edit_name]['email'] = input("Nuevo Email: ")
+
+                    email = input("Nuevo Email: ")
+                    while validators.email(email) is not True:
+                        email = input("No es un correo valido, porfavor intente de nuevo: ")
+
+                    contacts[edit_key][edit_name]['email'] = email
                 if change == 3:
                     contacts[edit_key][edit_name]['Company'] = input("Nuevo Company: ")
                 if change == 4:
@@ -89,18 +115,22 @@ def editarContacto():
                 if change == 5:
                     pass
 
-
-    if found != True:
+    if found is not True:
         print("Contacto Invalido\n")
+
+    print("\n\n\n")
 
 
 def buscarContacto():
-
-    searcher = input("Ingrese algo: ")
+    searcher = input("Ingrese lo que quisiera buscar: ")
     for key, value in contacts.items():
         for contact in value.items():
             if re.search(rf"{searcher.lower()}", contact[0].lower()):
                 print("-", contact[0])
+
+    print("\n\n")
+    input("Press Enter To Continue")
+    print("\n\n\n")
 
 
 def eliminarContacto():
@@ -109,6 +139,8 @@ def eliminarContacto():
     index = input("Eliminar Contacto: ")
     print("\n\n")
     count = 0
+    delete_contact = ""
+    delete_key = ""
 
     try:
         index = int(index)
@@ -119,19 +151,18 @@ def eliminarContacto():
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index) or contact[0] == index):
-                delete_key =  key
+            if count == index or contact[0] == index:
+                delete_key = key
                 delete_contact = contact[0]
                 delete = True
 
-    if delete == True:
+    if delete is True:
         print(f"Contacto {delete_contact} borrado\n\n")
         del contacts[delete_key][delete_contact]
         time.sleep(3)
 
 
 def listarContactos():
-
     count = 0
     for key, value in contacts.items():
         print(key + ":")
@@ -142,27 +173,28 @@ def listarContactos():
 
 
 def verContactos():
-
     listarContactos()
 
     index = input("Ver Contacto: ")
     print("\n\n")
     count = 0
+
+    try:
+        index = int(index)
+
+    except ValueError:
+        pass
+
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index)):
+            if count == index or contact[0] == index:
                 print(contact[0])
                 for field, val in contact[1].items():
-                    print("  "+field + ":", val)
+                    print("  " + field + ":", val)
                 print("\n\n")
                 input("Presione enter para continuar.")
                 print("\n\n\n\n")
-
-
-def guardarContactos():
-    # saves changes, should be able to be called from anywhere
-    pass
 
 
 def llamarContacto():
@@ -180,10 +212,12 @@ def llamarContacto():
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index) or contact[0] == index):
+            if count == index or contact[0] == index:
                 telefono = contact[1]['telefono']
                 print(emoji.emojize("Llamando :phone: a " + contact[0] + " al " + telefono, use_aliases=True))
                 time.sleep(3)
+
+    print("\n\n\n")
 
 
 def textContacto():
@@ -201,7 +235,7 @@ def textContacto():
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index) or contact[0] == index):
+            if count == index or contact[0] == index:
                 print(contact[0])
                 message = input("Mensaje: ")
                 telefono = contact[1]['telefono']
@@ -214,6 +248,8 @@ def textContacto():
                 else:
                     print("\nMensaje no enviado\n\n")
                     time.sleep(1)
+
+    print("\n\n\n")
 
 
 def emailContacto():
@@ -231,49 +267,64 @@ def emailContacto():
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
-            if (count == int(index) or contact[0] == index):
+            if count == index or contact[0] == index:
                 print(contact[0])
-                subject = input("Subejct: ")
+                subject = input("Subject: ")
                 mensaje = input("Mensaje: ")
                 email = contact[1]['email']
                 print(emoji.emojize("Enviando :envelope: a " + contact[0] + " " + email))
                 print("   > ", subject)
                 print("   > ", mensaje)
+                print("\n\n\n")
+                time.sleep(2)
 
 
 def exportarContactos():
     with open("contact_manager.csv", 'w', newline='') as contacts_csv:
-        fieldnames = ['name', 'telefono', 'email', 'company', 'extra']
-        writer = csv.DictWriter(contacts_csv, fieldnames = fieldnames)
+        infonames = ['name', 'telefono', 'email', 'company', 'extra']
+        writer = csv.DictWriter(contacts_csv, fieldnames=infonames)
         writer.writeheader()
         for key, value in contacts.items():
             for contact in value.items():
-                writer.writerow({'name': contact[0], 'telefono': contact[1]['telefono'], 'email': contact[1]['email'], 'company': contact[1]['company'], 'extra': contact[1]['extra']})
+                writer.writerow({'name': contact[0], 'telefono': contact[1]['telefono'], 'email': contact[1]['email'],
+                                 'company': contact[1]['company'], 'extra': contact[1]['extra']})
+    print("Contactos exportados con exito.")
+    time.sleep(3)
+    print("\n\n\n")
 
 
-while not exit:
+while not exit_menu:
 
-    input_menu = int(input(" 1. Agregar Contacto \n 2. Editar Contacto\n 3. Buscar Contacto\n 4. Eliminar Contacto\n 5. Ver Contactos\n 6. Llamar Contacto \n 7. Text Contacto \n 8. Email Contacto \n 9. Exportar Contactos \n 10. Salir\n"))
-    if input_menu == 1: # Done
+    input_menu = 10
+    valid = False
+    while valid is False:
+        try:
+            input_menu = int(input(" 1. Agregar Contacto \n 2. Editar Contacto\n 3. Buscar Contacto\n"
+                                   " 4. Eliminar Contacto\n 5. Ver Contactos\n 6. Llamar Contacto \n "
+                                   "7. Text Contacto \n 8. Email Contacto \n 9. Exportar Contactos \n 10. Salir\n"))
+            valid = True
+        except ValueError:
+            print("\n\n\n")
+            print("Not a valid choice")
+
+    if input_menu == 1:
         crearContacto()
-    if input_menu == 2: # Done
+    if input_menu == 2:
         editarContacto()
-    if input_menu == 3: # Done
+    if input_menu == 3:
         buscarContacto()
-    if input_menu == 4: # Done
+    if input_menu == 4:
         eliminarContacto()
-    if input_menu == 5: # Done
+    if input_menu == 5:
         verContactos()
-    if input_menu == 6: # Done
+    if input_menu == 6:
         llamarContacto()
-    if input_menu == 7: # Done
+    if input_menu == 7:
         textContacto()
-    if input_menu == 8: # Done
+    if input_menu == 8:
         emailContacto()
-    if input_menu == 9: # Done
+    if input_menu == 9:
         exportarContactos()
 
     elif input_menu == 10:
-
-        guardarContactos()
-        exit = True
+        exit_menu = True
