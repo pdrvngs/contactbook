@@ -1,15 +1,15 @@
-import csv
-import emoji
-import json
-import re
-import time
-import validators
+from csv import DictWriter
+from emoji import emojize
+from json import load as jsonload
+from re import search as research
+from time import sleep
+from validators import email as emailcheck
 
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 info = {}
 # Load contacts from JSON
 with open("contacts.json") as file:
-    contacts = json.load(file)
+    contacts = jsonload(file)
 
 exit_menu = False
 
@@ -34,7 +34,7 @@ def crearContacto():
             print("Numero telefonico invalido, porfavor intente de nuevo:\n")
 
     email = input("Correo: ")
-    while validators.email(email) is not True:
+    while emailcheck(email) is not True:
         email = input("No es un correo valido, porfavor intente de nuevo: \n")
 
     company = input("Empresa: ")
@@ -104,7 +104,7 @@ def editarContacto():
                 if change == 2:
 
                     email = input("Nuevo correo: ")
-                    while validators.email(email) is not True:
+                    while emailcheck(email) is not True:
                         email = input("No es un correo valido, porfavor intente de nuevo: \n")
 
                     contacts[edit_key][edit_name]['email'] = email
@@ -125,7 +125,7 @@ def buscarContacto():
     searcher = input("Ingrese a quien quisiera buscar: ")
     for key, value in contacts.items():
         for contact in value.items():
-            if re.search(rf"{searcher.lower()}", contact[0].lower()):
+            if research(rf"{searcher.lower()}", contact[0].lower()):
                 print("-", contact[0])
 
     print("\n\n")
@@ -159,7 +159,7 @@ def eliminarContacto():
     if delete is True:
         print(f"Contacto {delete_contact} borrado\n\n")
         del contacts[delete_key][delete_contact]
-        time.sleep(3)
+        sleep(3)
 
 
 def listarContactos():
@@ -214,8 +214,8 @@ def llamarContacto():
             count += 1
             if count == index or contact[0] == index:
                 telefono = contact[1]['telefono']
-                print(emoji.emojize("Llamando :phone: a " + contact[0] + " al " + telefono, use_aliases=True))
-                time.sleep(3)
+                print(emojize("Llamando :phone: a " + contact[0] + " al " + telefono, use_aliases=True))
+                sleep(3)
 
     print("\n\n\n")
 
@@ -244,10 +244,10 @@ def textContacto():
                 enviar = input("\nDesea enviar el mensaje? (y/n)\n ")
                 if enviar.lower() == 'y':
                     print(f"\nEnviando mensaje a {contact[0]}\n\n")
-                    time.sleep(3)
+                    sleep(3)
                 else:
                     print("\nMensaje no enviado\n\n")
-                    time.sleep(1)
+                    sleep(1)
 
     print("\n\n\n")
 
@@ -272,24 +272,24 @@ def emailContacto():
                 subject = input("Sujeto: ")
                 mensaje = input("Mensaje: ")
                 email = contact[1]['email']
-                print(emoji.emojize("Enviando :envelope: a " + contact[0] + " " + email))
+                print(emojize("Enviando :envelope: a " + contact[0] + " " + email))
                 print("   > ", subject)
                 print("   > ", mensaje)
                 print("\n\n\n")
-                time.sleep(2)
+                sleep(2)
 
 
 def exportarContactos():
     with open("contact_manager.csv", 'w', newline='') as contacts_csv:
         infonames = ['name', 'telefono', 'email', 'company', 'extra']
-        writer = csv.DictWriter(contacts_csv, fieldnames=infonames)
+        writer = DictWriter(contacts_csv, fieldnames=infonames)
         writer.writeheader()
         for key, value in contacts.items():
             for contact in value.items():
                 writer.writerow({'name': contact[0], 'telefono': contact[1]['telefono'], 'email': contact[1]['email'],
                                  'company': contact[1]['company'], 'extra': contact[1]['extra']})
     print("Contactos exportados con exito.")
-    time.sleep(3)
+    sleep(3)
     print("\n\n\n")
 
 
