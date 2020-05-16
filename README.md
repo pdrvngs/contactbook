@@ -8,6 +8,9 @@ GUI \(unless I implement this into a flask framework\). The the Contact Book
 will allow the user to create, remove, edit and interact with their contact list. 
 The contacts are saved and loaded back in when the user quits and restarts the script. 
 
+Video Presentation: 
+https://youtu.be/PqaHz7yNji8
+
 #### How it works
 Utilizing as much base python as possible, the project consists of a series of functions that provide the backbone of the script, while using control structures to determine the flow of the application. 
 The underlying data structure of the project is a JSON file which is converted into a 
