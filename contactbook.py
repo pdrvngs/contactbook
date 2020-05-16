@@ -6,7 +6,6 @@ from time import sleep
 from validators import email as emailcheck
 
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-info = {}
 # Load contacts from JSON
 with open("contacts.json") as file:
     contacts = jsonload(file)
@@ -16,10 +15,12 @@ exit_menu = False
 
 def crearContacto():
 
+    # Validacion de que se ingrese algo para el nombre
     nombre = input("Nombre: ")
     while len(nombre) < 1:
         nombre = input("Porfavor ingrese un nombre: ")
 
+    # Validacion del numero telefonico
     valid_phone = 0
     telefono = ""
     while valid_phone != 8:
@@ -33,13 +34,16 @@ def crearContacto():
         if valid_phone != 8:
             print("Numero telefonico invalido, porfavor intente de nuevo:\n")
 
+# Validacion del correo
     email = input("Correo: ")
     while emailcheck(email) is not True:
         email = input("No es un correo valido, porfavor intente de nuevo: \n")
 
+# Estas casillas no son necesarias, por lo tanto no se validan.
     company = input("Empresa: ")
     extra = input("Extra: ")
 
+# Crea un nuevo KEY para el orden alfabetico.
     first_letter = nombre[0].upper()
     alf_ord = []
     for key, value in contacts.items():
@@ -49,6 +53,7 @@ def crearContacto():
     if first_letter not in alf_ord:
         contacts[first_letter] = {}
 
+# Asignamos todos los valores al key alfabetico correcto y se asignan el diccionario de info con el nombre como key.
     for key in contacts.keys():
         if key == first_letter:
             contacts[key][nombre] = {'telefono': telefono, 'email': email, 'company': company, 'extra': extra}
@@ -75,6 +80,8 @@ def editarContacto():
     for key, value in contacts.items():
         for contact in value.items():
             count += 1
+            # Contamos mientra itera sobre los nombres y buscamos cuando la cuenta sea igual al numero del usuario
+            # Si index no es int, solo busca que el nombre ingresado sea igual al que esta en iteracion.
             if count == index or contact[0] == index:
                 print(contact[0])
                 found = True
@@ -125,6 +132,7 @@ def buscarContacto():
     searcher = input("Ingrese a quien quisiera buscar: ")
     for key, value in contacts.items():
         for contact in value.items():
+            # Usamos RegEx para hacer un parcial match de lo que ingrese el usuario.
             if research(rf"{searcher.lower()}", contact[0].lower()):
                 print("-", contact[0])
 
@@ -156,6 +164,7 @@ def eliminarContacto():
                 delete_contact = contact[0]
                 delete = True
 
+    # Busca si existe el contacto, si existe lo borra llamando sus keys.
     if delete is True:
         print(f"Contacto {delete_contact} borrado\n\n")
         del contacts[delete_key][delete_contact]
